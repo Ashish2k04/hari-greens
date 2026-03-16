@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Hero from '../../components/Hero/Hero';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { useSite } from '../../context/SiteContext';
+import api from '../../api';
 import './Home.css';
 
 const Home = () => {
@@ -13,7 +13,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/products');
+        const { data } = await api.get('/products');
         setProducts(data);
         setLoading(false);
       } catch (error) {

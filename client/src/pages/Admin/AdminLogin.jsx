@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api';
 import { Eye, EyeOff } from 'lucide-react';
 import './AdminLogin.css';
 
@@ -13,7 +13,7 @@ const AdminLogin = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/admin/login', { password });
+      const response = await api.post('/admin/login', { password });
       if (response.data.success) {
         onLogin();
         navigate('/admin');

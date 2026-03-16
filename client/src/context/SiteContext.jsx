@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const SiteContext = createContext();
 
@@ -15,7 +15,7 @@ export const SiteProvider = ({ children }) => {
   useEffect(() => {
     const fetchSiteDetails = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/admin/footer');
+        const { data } = await api.get('/admin/footer');
         if (data.success && data.data) {
           setSiteData(data.data);
         }

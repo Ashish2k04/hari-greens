@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
+import api from '../../api';
 import './AdminPanel.css';
 
 const AdminPanel = () => {
@@ -33,7 +33,7 @@ const AdminPanel = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/products');
+      const { data } = await api.get('/products');
       setProducts(data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -42,7 +42,7 @@ const AdminPanel = () => {
 
   const fetchFooterDetails = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/admin/footer');
+      const { data } = await api.get('/admin/footer');
       if (data.success && data.data) {
         setFooterForm({
           footerAddress: data.data.footerAddress || '',
@@ -62,7 +62,7 @@ const AdminPanel = () => {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.put('http://localhost:5000/api/admin/password', passwordForm);
+      const res = await api.put('/admin/password', passwordForm);
       setPasswordMsg({ text: res.data.message, type: 'success' });
       setPasswordForm({ oldPassword: '', newPassword: '' });
     } catch (err) {
@@ -74,7 +74,7 @@ const AdminPanel = () => {
   const handleFooterSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.put('http://localhost:5000/api/admin/footer', footerForm);
+      const res = await api.put('/admin/footer', footerForm);
       setFooterMsg({ text: res.data.message, type: 'success' });
     } catch (err) {
       setFooterMsg({ text: err.response?.data?.message || 'Error updating footer', type: 'error' });
@@ -86,9 +86,9 @@ const AdminPanel = () => {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(`http://localhost:5000/api/products/${editingId}`, formData);
+        await api.put(`/products/${editingId}`, formData);
       } else {
-        await axios.post('http://localhost:5000/api/products', formData);
+        await api.post('/products', formData);
       }
       setFormData({ name: '', price: '', unit: 'કિલો', image: '', category: 'શાકભાજી' });
       setEditingId(null);
@@ -113,7 +113,7 @@ const AdminPanel = () => {
   const handleDelete = async (id) => {
     if (window.confirm('શું તમે ખરેખર આ પ્રોડક્ટ ડિલીટ કરવા માંગો છો? (Are you sure you want to delete this product?)')) {
       try {
-        await axios.delete(`http://localhost:5000/api/products/${id}`);
+        await api.delete(`/products/${id}`);
         fetchProducts();
       } catch (error) {
         console.error('Error deleting product:', error);
